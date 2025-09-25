@@ -2,352 +2,280 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Rick Subel | Design</title>
-  <!-- BOOTSTRAP CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <!-- MY CSS STYLESHEET -->
-  <link rel="stylesheet" href="styles.css">
-  <!-- FONTAWESOME ICONS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg nav-gradient fixed-top py-0">
-      <a id="nameplate" class="navbar-brand" href="#">Rick Subel | Design</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+  <header class="site-header" id="top">
+    <!-- NAVBAR -->
+    <nav class="nav container" aria-label="Primary">
+      <a class="nav__brand" href="#top">Rick Subel<span> | Design</span></a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+        <span class="nav__toggle-line"></span>
+        <span class="nav__toggle-line"></span>
+        <span class="nav__toggle-line"></span>
+        <span class="visually-hidden">Menu</span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul id="link-color" class="navbar-nav ms-auto mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#about-container">about</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#projects-container">projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#skills-container">skills</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#contact-container">contact</a>
-          </li>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#about">About</a></li>
+          <li><a class="nav__link" href="#projects">Projects</a></li>
+          <li><a class="nav__link" href="#skills">Skills</a></li>
+          <li><a class="nav__link" href="#contact">Contact</a></li>
         </ul>
       </div>
     </nav>
+  </header>
 
-  <!-- HERO SECTION -->
-  <div id="hero-container" class="row">
-    <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;" >
-      <div id="hero-content" class="card" >
-        <div class="row g-0">
-          <div id="hero-selfie" class="col-md-4">
-            <img src="Assets/Selfie2.JPG" class="img-fluid rounded-start" alt="man with glasses">
-          </div>
-          <div class="col">
-            <div id="hero-info" class="card-body row">
-                <ul class="card-text row">
-                  <li class="card-title">Hello! I'm Rick Subel, and I am a Software Designer, Full Stack Developer, and Pageantry Arts Designer from Atlanta, GA. I would love to create something with you!</li>
-                </ul>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="hero-button" class="btn btn-primary" role="button" href="#contact-container">Let's Connect!</a>
-                </div>
-            </div>
+  <main>
+    <section class="section hero" id="home">
+      <div class="container hero__grid">
+        <figure class="hero__media">
+          <img src="Assets/Selfie 1.jpg" alt="Rick Subel" loading="lazy" />
+        </figure>
+        <div class="hero__content">
+          <p class="eyebrow">Hello, I’m Rick</p>
+          <h1 class="hero__title">Designer, technologist, and collaborator from Atlanta, GA.</h1>
+          <p class="hero__text">
+            I build thoughtful digital experiences that balance aesthetics and usability—drawing on years of creative direction, project leadership, and full-stack development.
+          </p>
+          <div class="hero__actions">
+            <a class="btn" href="#projects">View Work</a>
+            <a class="btn btn--ghost" href="#contact">Let’s Connect</a>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container split">
+        <div class="split__content">
+          <h2 class="section__title">About Me</h2>
+          <p>
+            I’m a self-motivated full-stack software engineer with a passion for crafting engaging products that make an impact. After graduating from General Assembly’s Software Engineering Immersive and Codecademy’s Full Stack Developer Immersive, I’ve continued to blend technology, artistry, and leadership across every project.
+          </p>
+          <p>
+            My background as a creative director and project manager means I thrive in collaborative environments. I love transforming complex ideas into clear solutions—whether that’s designing a digital product, building out a software feature, or leading a team through a production schedule.
+          </p>
+          <p>
+            Beyond software, I co-direct Paramount Winterguard in Atlanta and serve as Artistic Director for The Cavaliers Drum and Bugle Corps. These roles keep my creative perspective sharp and reinforce the importance of storytelling, mentorship, and community.
+          </p>
+        </div>
+        <div class="split__media">
+          <img src="Assets/Selfie 2.jpeg" alt="Rick Subel with giraffe" loading="lazy" class="split__media-img" data-selfie="2" />
+          <img src="Assets/Selfie 3.jpg" alt="Rick Subel in a suit" loading="lazy" class="split__media-img" data-selfie="3" />
+          <img src="Assets/Selfie 4.jpeg" alt="Rick Subel grimacing" loading="lazy" class="split__media-img" data-selfie="4" />
+          <img src="Assets/Selfie 5.jpeg" alt="Rick Subel in the sun" loading="lazy" class="split__media-img" data-selfie="5" />
+          <img src="Assets/Selfie 6.jpeg" alt="Rick Subel headshot" loading="lazy" class="split__media-img" data-selfie="6" />
+          <img src="Assets/Selfie 7.jpeg" alt="Rick Subel with a dog" loading="lazy" class="split__media-img" data-selfie="7" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--accent" id="projects">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title">Selected Projects</h2>
+          <p class="section__intro">A snapshot of recent explorations in product design, web applications, and creative tech.</p>
+        </div>
+        <div class="projects" data-carousel>
+          <button class="projects__nav projects__nav--prev" type="button" aria-label="Scroll projects left">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <div class="projects__viewport" tabindex="0" role="region" aria-label="Selected projects carousel">
+            <div class="projects__track">
+              <article class="card">
+                <img src="Assets/Project - Writing Share.jpeg" alt="Quilliant project preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">Quilliant!</h3>
+                  <p class="card__text">A collaborative storytelling platform that pairs writers to co-create surprising narratives.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+
+              <article class="card">
+                <img src="Assets/Project - Travel.jpeg" alt="DeTourist project preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">DeTourist</h3>
+                  <p class="card__text">An itinerary planner designed to uncover local gems and support small businesses.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+
+              <article class="card">
+                <img src="Assets/Project - Blocks Game.jpg" alt="Blockhead game preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">Blockhead!</h3>
+                  <p class="card__text">A physics-based stacking game built to explore playful animations and scoring systems.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+
+              <article class="card">
+                <img src="Assets/Project - World Building Game.jpeg" alt="RealmCraft project preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">RealmCraft</h3>
+                  <p class="card__text">A world-building experience that mixes strategy gameplay with collaborative storytelling.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+
+              <article class="card">
+                <img src="Assets/Project - Website.jpeg" alt="Mosaic project preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">Mosaic</h3>
+                  <p class="card__text">A brand-forward website system for creative entrepreneurs to launch quickly and elegantly.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+
+              <article class="card">
+                <img src="Assets/Project - Gambling Trainer.jpeg" alt="WagerWit project preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">WagerWit</h3>
+                  <p class="card__text">A training tool that teaches probability, risk, and finance concepts through interactive play.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+
+              <article class="card">
+                <img src="Assets/Project - Bartering App.jpeg" alt="BarterFlow project preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">BarterFlow</h3>
+                  <p class="card__text">A peer-to-peer swap marketplace that streamlines matching trades with smart wishlists.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+
+              <article class="card">
+                <img src="Assets/Project - Medieval RPG.jpeg" alt="MythicForge project preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">MythicForge</h3>
+                  <p class="card__text">A cooperative medieval RPG experience that blends tactical combat with narrative-driven quests.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+
+              <article class="card">
+                <img src="Assets/Project - Social App.jpeg" alt="CircleUp project preview" loading="lazy" />
+                <div class="card__body">
+                  <h3 class="card__title">CircleUp</h3>
+                  <p class="card__text">A social planning app that helps close friends organize meetups without endless group chats.</p>
+                  <a class="card__link" href="404.html">Case study coming soon</a>
+                </div>
+              </article>
+            </div>
+          </div>
+          <button class="projects__nav projects__nav--next" type="button" aria-label="Scroll projects right">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title">Skills &amp; Tools</h2>
+          <p class="section__intro">A blend of technical depth, creative direction, and collaborative process.</p>
+        </div>
+        <div class="skills__grid">
+          <div class="skills__group" id="group-1">
+            <h3>Development</h3>
+            <ul>
+              <li>JavaScript &amp; TypeScript</li>
+              <li>React &amp; Node.js</li>
+              <li>Express &amp; Django</li>
+              <li>PostgreSQL &amp; MongoDB</li>
+            </ul>
+          </div>
+          <div class="skills__group skills__group--right" id="group-2">
+            <h3>Design</h3>
+            <ul>
+              <li>Product strategy &amp; user flows</li>
+              <li>Interface design &amp; prototyping</li>
+              <li>Design systems &amp; accessibility</li>
+              <li>Motion &amp; storytelling</li>
+            </ul>
+          </div>
+          <div class="skills__group" id="group-3">
+            <h3>Collaboration</h3>
+            <ul>
+              <li>Team leadership &amp; mentorship</li>
+              <li>Client partnerships</li>
+              <li>Creative direction</li>
+              <li>Budget &amp; production management</li>
+            </ul>
+          </div>
+          <div class="skills__group skills__group--right" id="group-4">
+            <h3>Tools</h3>
+            <ul>
+              <li>Git &amp; GitHub</li>
+              <li>Figma &amp; Adobe CC</li>
+              <li>Notion &amp; Trello</li>
+              <li>Audio &amp; video production</li>
+            </ul>
+          </div>
+          <figure class="skills__portrait">
+            <img src="Assets/Selfie 9.jpg" alt="Rick Subel smiling" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--accent" id="contact">
+      <div class="container contact">
+        <div class="contact__content">
+          <h2 class="section__title">Let’s Build Something</h2>
+          <p>
+            Ready to collaborate, need a guest clinician, or want to talk through an idea? Drop a line and I’ll get back to you quickly.
+          </p>
+          <ul class="contact__links">
+            <li><a href="mailto:ricksubel@gmail.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> ricksubel@gmail.com</a></li>
+            <li><a href="https://calendly.com/ricksubel/telephone-conversation" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-phone" aria-hidden="true"></i> Schedule a chat</a></li>
+            <li><a href="https://www.linkedin.com/in/rick-subel-7678215/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+            <li><a href="https://github.com/ricksubel" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a></li>
+          </ul>
+        </div>
+        <form class="contact__form" id="contact-form">
+          <label class="form__field">
+            <span>Name</span>
+            <input type="text" name="name" placeholder="what's your name?" required />
+          </label>
+          <label class="form__field">
+            <span>Email</span>
+            <input type="email" name="email" placeholder="what's your email" required />
+          </label>
+          <label class="form__field">
+            <span>Project or message</span>
+            <textarea name="message" rows="4" placeholder="what are you interested in building?" required></textarea>
+          </label>
+          <button type="submit" class="btn">Send Message</button>
+          <p class="form__note">I’ll follow up via email within two business days.</p>
+        </form>
+      </div>
+    </section>
     
-    <!-- ABOUT SECTION -->
-    <div id="about-container" class="col pt-5">
-      <div class="d-flex justify-content-center row" style="min-height: 100vh;" >
-      <div id="about-content" class="container col justify-content-center" style="max-width: 90vw;">
-        <div class="col d-flex align-items-center">
-          <h1 class="title col-4">About Me</h1>
-          <div class="col-3 d-flex justify-content-center mt-3">
-            <img id="about-selfie" class="" src="Assets/Selfie.jpeg" alt="man with zebra">
-          </div>
-        </div>
-          <div class="row">
-            <div id="about-info" class="card-body pt-3">
-              <ul class="card-text">
-                <li class="card-title">I’m a passionate and self-motivated Full Stack Software Engineer with a strong foundation in building interactive, user-focused web applications. A graduate of General Assembly’s Software Engineering Immersive and Codeacademy’s Full Stack Developer Immersive, I bring a creative mindset and a drive for continuous learning to every project I take on. My background as a creative director and project manager gives me a unique ability to combine technical expertise with strong leadership, problem-solving, and design skills. I thrive in collaborative environments, excel at turning complex ideas into workable solutions, and am dedicated to creating innovative, engaging, and reliable digital experiences.
-                <br>
-                <br>
-                In addition to my coding and software interest, I am the Co-Founder, Co-Director, and Creative Designer for Paramount Winterguard in Atlanta, GA. I am also the Artistic Director for The Cavaliers Drum and Bugle Corps, from Rosemont, IL. As an active pageantry designer, I am constantly learning and sharing new and proven processes for creating competitive and artistic designs. In addition to my pageantry design roles, I am an active adjudicator, clinician, and consultant. </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__content">
+      <div class="footer__social">
+        <a href="https://www.instagram.com/ricksubel/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://www.facebook.com/ricksubel" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+        <a href="https://github.com/ricksubel" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/in/rick-subel-7678215/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
       </div>
+      <p class="footer__brand">© <span id="year"></span> Rick Subel | Design</p>
     </div>
+  </footer>
 
-  <!-- PROJECTS SECTION -->
-  <div id="projects-container" class="row py-5 justify-content-center">
-      <div id="projects-content" class="container mx-5 align-items-center" >
-        <div class="row">
-          <h1 class="title mb-4 text-center fw-bold">Current Projects</h1>
-        </div>
-        <div class="row mb-4">
-          <div class="col-sm-3">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="Assets/Project - Game 1.jpeg" alt="Card image cap">
-              <div id="projects-body" class="card-body">
-                <h1 class="card-title text-center">Blackjack Trainer</h5>
-                <p class="text-center">Brief description</p>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="project-button" class="btn btn-primary" role="button" href="#">Let's Connect!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="Assets/Project - Game 2.jpeg" alt="Card image cap">
-              <div id="projects-body" class="card-body">
-                <h1 class="card-title text-center">D&D Type Game</h5>
-                <p class="text-center">Brief description</p>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="project-button" class="btn btn-primary" role="button" href="#">Let's Connect!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="Assets/Project - Game 3.jpeg" alt="Card image cap">
-              <div id="projects-body" class="card-body">
-                <h1 class="card-title text-center">Shapes Game</h5>
-                <p class="text-center">Brief description</p>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="project-button" class="btn btn-primary" role="button" href="#">Let's Connect!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="Assets/Project - Game 4.jpeg" alt="Card image cap">
-              <div id="projects-body" class="card-body">
-                <h1 class="card-title text-center">World Builder</h5>
-                <p class="text-center">Brief description</p>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="project-button" class="btn btn-primary" role="button" href="#">Let's Connect!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-3">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="Assets/Project - Travel.jpeg" alt="Card image cap">
-              <div id="projects-body" class="card-body">
-                <h1 class="card-title text-center">Traveler App</h5>
-                <p class="text-center">Brief description</p>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="project-button" class="btn btn-primary" role="button" href="#">Let's Connect!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="Assets/Project - Writing Share.jpeg" alt="Card image cap">
-              <div id="projects-body" class="card-body">
-                <h2 class="card-title text-center">Group Writing App</h5>
-                <p class="text-center">Brief description</p>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="project-button" class="btn btn-primary" role="button" href="#">Let's Connect!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="Assets/Project-Hood.jpeg" alt="Card image cap">
-              <div id="projects-body" class="card-body">
-                <h1 class="card-title text-center">Bartering App</h5>
-                <p class="text-center">Brief description</p>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="project-button" class="btn btn-primary" role="button" href="#">Let's Connect!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="Assets/Project - App.jpeg" alt="Card image cap">
-              <div id="projects-body" class="card-body">
-                <h1 class="card-title text-center">Social App</h5>
-                <p class="text-center">Brief description</p>
-                <div id="button-contain" class="col-md-12 d-flex justify-content-center align-items-center">
-                  <a id="project-button" class="btn btn-primary" role="button" href="#">Let's Connect!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <button class="back-to-top" type="button" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
 
-  <!-- SKILLS SECTION -->
-<div id="skills-container" class="col pt-5">
-      <div id="skills-content" class="container col">
-
-        <div class="row d-flex align-items-center">
-          <div class="col-4">
-            <h1 class="title">My Skills</h1>
-          </div>
-          <div class="col-8 d-flex mt-3 justify-content-end">
-            <img id="skills-image" src="Assets/skills.png" alt="list of coding languages">
-          </div>
-        </div>
-
-          <div class="row">
-            <div id="about-info" class="card-body pt-3">
-              <ul class="card-text">
-                <li class="card-title">
-                  Programming & Technologies: <br>
-                  JavaScript, Python, React, Node.js, Express, Django, PostgreSQL, MongoDB, Recoil, JQuery, HTML6, CSS, Sass, Bootstrap, Materialize, Bulma, Semantic UI, OAuth, Git, Trello, Figma
-                  <br>
-                  <br>
-                  Core Strengths: <br>
-                  Full-stack web application development
-                  Project management and team leadership
-                  Creative problem-solving and innovative solution design
-                  UI/UX design and responsive interface implementation
-                  Client service and relationship building
-                  Budget creation and management
-                  Adaptable multitasking in fast-paced environments
-                  <br>
-                  <br>
-                  Additional Experience: <br>
-                  Music and video editing/production
-                  Website design, social media strategy, and marketing
-                  Graphic Design
-                  Coaching and mentoring teams of various sizes
-              </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-    </div>
-
-  <!-- CONTACT SECTION -->
-  <div id="contact-container">
-    <div class="col-md-6">
-      <div id="contact-content" class="row d-flex justify-content-center">
-        <div class="row">
-          <h1 id="contact-title" class="title my-5">Contact Me</h1>
-        </div>
-        <div id="" class="col-md-6">
-          <div class="row g-4">
-            <div >
-              <h3>Send me a message!</h3>
-            </div>
-            <div >
-              <input type="text" placeholder="Your Name" class="form-control">
-            </div>
-            <div >
-              <input type="email" placeholder="Your Email" class="form-control">
-            </div>
-            <div >
-              <textarea class="form-control" placeholder="Message Me"rows="3"></textarea>
-            </div>
-            <div class="col-12 d-flex justify-content-center">
-              <button type="button" id="submit-button" class="btn btn-primary">Submit</button>
-            </div>
-          </div>
-        </div>
-        <div id="" class="col-md-6">
-          <div class="row g-4">
-          <div class="mx-5">
-            <h3>Or follow me on social media!</h3>
-          </div>
-                <div id="contact-socials" class="social-icon d-flex justify-content-center">
-                  <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/rick-subel-7678215/" class="social-link"><i class="fa-brands fa-linkedin fa-2xl"></i></a>
-                  <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/ricksubel" class="social-link px-4"><i class="fa-brands fa-facebook fa-2xl"></i></a>
-                  <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/ricksubel/" class="social-link"><i class="fa-brands fa-instagram fa-2xl"></i></a>
-                  <i></i>
-                </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-  <!-- FOOTER SECTION -->
-  <footer class="footer-gradient pt-4">
-    <div class="container">
-        <div class="row">
-
-            <!-- CONTACT INFO -->
-            <div class="col-5">
-                <h3 class="fw-bold">Rick Subel | Design</h3>
-                <p class="pt-1">Learning, Creating, and Sharing.
-                  <br>Atlanta, GA, USA.
-                </p>
-                <div class="icon-and-text d-flex">
-                  <a target="_blank" rel="noopener noreferrer" href="https://calendly.com/ricksubel/telephone-conversation" class="social-icon"><i class="fa-solid fa-phone fa-xl"></i></a> <!-- Replace with your icon element (e.g., Font Awesome) -->
-                  <p class="px-2">Schedule a Chat</p>
-                </div>
-                <div class="icon-and-text d-flex">
-                  <a target="_blank" rel="noopener noreferrer" href="https://calendly.com/ricksubel/telephone-conversation" class="social-icon"><i class="fa-solid fa-envelope fa-xl"></i></a> <!-- Replace with your icon element (e.g., Font Awesome) -->
-                  <p class="px-2">Email Me</p>
-                </div>
-            </div>
-
-            <!-- SOCIAL MEDIA -->
-            <div class="col-3">
-                <h4>Follow Me</h4>
-                <div class="social-icon pt-1">
-                  <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/rick-subel-7678215/" class="social-link"><i class="fa-brands fa-linkedin fa-xl"></i></a>
-                  <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/ricksubel" class="social-link px-2"><i class="fa-brands fa-facebook fa-xl"></i></a>
-                  <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/ricksubel/" class="social-link"><i class="fa-brands fa-instagram fa-xl"></i></a>
-                  <i></i>
-                </div>
-              </div>
-
-            <!-- FOOTER NAV -->
-            <div class="col-3">
-                <h4>Navigate to</h4>
-                <ul class="list-unstyled">
-                  <li>
-                    <a class="nav-link active" aria-current="page" href="#hero-container">home</a>
-                  </li>
-                  <li>
-                    <a class="nav-link active" aria-current="page" href="#about-container">about</a>
-                  </li>
-                  <li>
-                    <a class="nav-link active" href="#projects-container">projects</a>
-                  </li>
-                  <li>
-                    <a class="nav-link active" href="#skills-container">skills</a>
-                  </li>
-                  <li>
-                    <a class="nav-link active" href="#contact-container">contact</a>
-                  </li>
-                </ul>
-            </div>
-        </div>
-
-        <hr>
-        
-        <!-- COPYRIGHT SECTION -->
-        <div class="d-sm-flex justify-content-center py-1">
-            <p>2025 © Rick Subel | Design. All Rights Reserved. </p>
-        </div>
-    </div>
-</footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-
+  <script src="scripts.js" defer></script>
 </body>
-
-
 </html>
