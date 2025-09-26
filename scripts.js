@@ -17,6 +17,27 @@
     const skillsSection = document.querySelector('#section-skills');
     const contactSection = document.querySelector('#section-contact');
 
+    const clearHashFromUrl = () => {
+        if (!history.replaceState) return;
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+    };
+
+    const scrollToElement = (element, behavior = 'smooth') => {
+        if (!element) return;
+        element.scrollIntoView({ behavior, block: 'start' });
+    };
+
+    if (window.location.hash) {
+        const initialId = window.location.hash.slice(1);
+        const initialTarget = initialId ? document.getElementById(initialId) : null;
+
+        if (initialTarget) {
+            requestAnimationFrame(() => scrollToElement(initialTarget, 'auto'));
+        }
+
+        clearHashFromUrl();
+    }
+
     if (yearEl) {
         yearEl.textContent = new Date().getFullYear();
     }
@@ -94,14 +115,12 @@
 
         const pageTop = document.querySelector('#page-top');
         if (pageTop) {
-            pageTop.scrollIntoView({ behavior: 'smooth' });
+            scrollToElement(pageTop);
         } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        if (history.replaceState) {
-            history.replaceState(null, '', window.location.pathname + window.location.search);
-        }
+        clearHashFromUrl();
     });
 
     const internalAnchors = document.querySelectorAll('a[href^="#"]:not([href="#"]):not(.nav__brand)');
@@ -119,11 +138,9 @@
                 closeMenu();
             }
 
-            target.scrollIntoView({ behavior: 'smooth' });
+            scrollToElement(target);
 
-            if (history.replaceState) {
-                history.replaceState(null, '', window.location.pathname + window.location.search);
-            }
+            clearHashFromUrl();
         });
     });
 
