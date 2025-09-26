@@ -486,6 +486,7 @@ img[data-selfie],
     font-size: 0.85rem;
     width: min(220px, 80%);
     align-self: center;
+    justify-self: center;
   }
 
   .hero__content {
@@ -520,6 +521,7 @@ img[data-selfie],
   .contact__form .btn {
     font-size: 0.82rem;
     padding: 0.5rem 1.05rem;
+    justify-self: center;
   }
 }
 
@@ -589,8 +591,9 @@ img[data-selfie],
 @media (max-width: 599px) {
   body {
     background-attachment: scroll, scroll;
-    background-position: center, 50% 32%;
-    background-size: auto, 210%;
+    background-position: center, 50% 38%;
+    background-size: auto, cover;
+    background-repeat: no-repeat;
   }
 
   .hero__grid {
@@ -619,8 +622,9 @@ img[data-selfie],
 
   .contact {
     background-attachment: scroll, scroll;
-    background-position: center, 52% 34%;
-    background-size: auto, 185%;
+    background-position: center, 50% 42%;
+    background-size: auto, cover;
+    background-repeat: no-repeat;
   }
 
   .split__media-img {
@@ -631,6 +635,18 @@ img[data-selfie],
   .split__media-img[data-selfie="3"],
   .split__media-img[data-selfie="7"] {
     display: block;
+  }
+}
+
+@media (max-width: 430px) {
+  body {
+    background-position: center, 50% 44%;
+    background-size: auto, cover;
+  }
+
+  .contact {
+    background-position: center, 50% 48%;
+    background-size: auto, cover;
   }
 }
 
