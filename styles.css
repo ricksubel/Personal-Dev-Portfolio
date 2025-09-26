@@ -553,12 +553,36 @@ img {
   flex: 0 0 clamp(260px, 30vw, 320px);
   max-width: clamp(260px, 30vw, 320px);
   scroll-snap-align: start;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  position: relative;
+}
+
+.projects__track > .card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: rgba(1, 28, 31, 0.88);
+  border-radius: var(--radius-lg);
+  z-index: 0;
+}
+
+.projects__track > .card .card__body {
+  background: rgba(1, 28, 31, 0.88);
+  border-radius: var(--radius-md);
+  padding: clamp(18px, 4vw, 24px);
+  display: grid;
+  gap: clamp(10px, 3vw, 14px);
+  position: relative;
+  z-index: 1;
 }
 
 .projects__track > .card img {
   width: 100%;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  position: relative;
+  z-index: 1;
 }
 
 .projects__nav {
@@ -604,6 +628,28 @@ img {
   .projects__track {
     gap: clamp(18px, 6vw, 24px);
   }
+
+  .projects__track > .card {
+    flex: 0 0 calc(clamp(260px, 30vw, 320px) * 0.7);
+    max-width: calc(clamp(260px, 30vw, 320px) * 0.7);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .projects__track > .card img {
+    width: 110%;
+    max-width: none;
+    transform: translateX(-5%);
+  }
+
+  .projects__track > .card .card__body {
+    padding: clamp(16px, 3vw, 20px);
+  }
+
+  .projects__track > .card::before {
+    background: rgba(1, 28, 31, 0.9);
+  }
 }
 
 .card {
@@ -635,6 +681,7 @@ img {
 .card__text {
   margin: 0;
   color: var(--color-text-muted);
+  font-size: 0.81em;
 }
 
 .card__link {
@@ -643,6 +690,7 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  font-size: 0.75em;
 }
 
 .card__link::after {
