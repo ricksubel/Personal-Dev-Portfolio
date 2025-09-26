@@ -589,8 +589,8 @@ img[data-selfie],
 @media (max-width: 599px) {
   body {
     background-attachment: scroll, scroll;
-    background-position: center, 50% 28%;
-    background-size: auto, 140%;
+    background-position: center, 50% 32%;
+    background-size: auto, 210%;
   }
 
   .hero__grid {
@@ -602,13 +602,25 @@ img[data-selfie],
   }
 
   .split__media {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    row-gap: clamp(16px, 6vw, 24px);
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    justify-items: stretch;
+    gap: clamp(14px, 5vw, 20px);
   }
 
   .split__media-img {
-    width: min(260px, 80vw);
+    width: 100%;
+  }
+
+  .split__media-img[data-selfie="7"] {
+    grid-column: 1 / -1;
+    justify-self: center;
+    max-width: min(240px, 82vw);
+  }
+
+  .contact {
+    background-attachment: scroll, scroll;
+    background-position: center, 52% 34%;
+    background-size: auto, 185%;
   }
 
   .split__media-img {
@@ -767,8 +779,8 @@ img[data-selfie],
 
   .projects__track > .card .card__body {
     padding: clamp(12px, 5vw, 18px) clamp(16px, 6vw, 22px);
-    font-size: 0.85em;
-    gap: 0.75rem;
+    font-size: 0.92em;
+    gap: 0.85rem;
     text-align: center;
     justify-items: center;
     border-radius: 0 0 28px 28px;
@@ -780,18 +792,18 @@ img[data-selfie],
   }
 
   .projects__track > .card .card__title {
-    font-size: 0.95em;
-    margin-bottom: 0.35rem;
+    font-size: 1.08em;
+    margin-bottom: 0.4rem;
   }
 
   .projects__track > .card .card__text {
-    font-size: 0.67em;
-    line-height: 1.35;
+    font-size: 0.82em;
+    line-height: 1.45;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-inline: clamp(12px, 6vw, 20px);
-    max-width: 28ch;
+    max-width: 30ch;
     margin: 0 auto;
   }
 
@@ -857,14 +869,14 @@ img[data-selfie],
 
 .card__title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: clamp(1.28rem, 1.4vw + 1.05rem, 1.48rem);
   letter-spacing: 0.03em;
 }
 
 .card__text {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 0.81em;
+  font-size: clamp(0.9rem, 1vw + 0.75rem, 1.05rem);
 }
 
 .card__link {
