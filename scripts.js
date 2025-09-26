@@ -337,6 +337,9 @@
 
             setIconDirection();
 
+            // ensure viewport height matches exactly one card in vertical mode
+            syncViewportHeight();
+
             if (isMobileColumn) {
                 viewport.scrollTo({ top: 0, left: 0, behavior: 'auto' });
                 updateControls();
@@ -349,12 +352,21 @@
         const resizeWatcher = window.matchMedia('(max-width: 640px)');
         resizeWatcher.addEventListener('change', syncMobileState, { passive: true });
 
+        // === One-card height measurement (no gap) ===
         const getCardHeight = () => {
             const firstCard = track.querySelector('.card');
             if (!firstCard) return viewport.clientHeight;
-            const styles = window.getComputedStyle(track);
-            const gap = parseFloat(styles.rowGap || styles.gap || '0');
-            return firstCard.getBoundingClientRect().height + gap;
+            // exactly one card (no gap) so next card doesn't peek
+            return Math.round(firstCard.getBoundingClientRect().height);
+        };
+
+        // === Apply fixed height in vertical mode ===
+        const syncViewportHeight = () => {
+            if (isMobileColumn) {
+                viewport.style.height = `${getCardHeight()}px`; // show exactly one card
+            } else {
+                viewport.style.height = ''; // reset in horizontal mode
+            }
         };
 
         const ambient = document.createElement('div');
@@ -425,37 +437,36 @@
         let scrollIdleTimeout = 0;
 
         // Animate lines horizontally, reacting to scroll speed and carousel focus
-        // const stepAmbient = (time) => {
-        //     const delta = Math.min((time - lastFrame) / 1000, 0.045);
-        //     lastFrame = time;
+        const stepAmbient = (time) => {
+            const delta = Math.min((time - lastFrame) / 1000, 0.045);
+            lastFrame = time;
 
-        //     targetBoost = Math.max(targetBoost * 0.9, 0);
-        //     currentBoost += (targetBoost - currentBoost) * 0.12;
-        //     focusCurrent += (focusTarget - focusCurrent) * 0.08;
+            // ease boosts
+            targetBoost = Math.max(targetBoost * 0.9, 0);
+            currentBoost += (targetBoost - currentBoost) * 0.12;
+            focusCurrent += (focusTarget - focusCurrent) * 0.08;
 
-        //     const compositeSpeed = (baseSpeed + currentBoost) * Math.max(focusCurrent, 0.12);
+            const compositeSpeed = (baseSpeed + currentBoost) * Math.max(focusCurrent, 0.12);
 
-        //     ambientLines.forEach((line) => {
-        //         if (!isScrollActive) {
-        //             line.x += compositeSpeed * line.speedScale * delta;
+            ambientLines.forEach((line) => {
+                if (!isScrollActive) {
+                    line.x += compositeSpeed * line.speedScale * delta;
+                    const exitThreshold = ambientWidth + line.lengthPx * 1.3;
+                    if (line.x > exitThreshold) {
+                        line.x = -line.lengthPx - Math.random() * ambientWidth * 0.25;
+                        line.el.style.top = `${Math.random() * 100}%`;
+                    }
+                }
+                line.el.style.transform = `translate3d(${line.x}px, 0, 0)`;
+            });
 
-        //             const exitThreshold = ambientWidth + line.lengthPx * 1.3;
-        //             if (line.x > exitThreshold) {
-        //                 line.x = -line.lengthPx - Math.random() * ambientWidth * 0.25;
-        //                 line.el.style.top = `${Math.random() * 100}%`;
-        //             }
-        //         }
+            window.requestAnimationFrame(stepAmbient);
+        };
 
-        //         line.el.style.transform = `translate3d(${line.x}px, 0, 0)`;
-        //     });
-
-        //     window.requestAnimationFrame(stepAmbient);
-        // };
-
-        // window.requestAnimationFrame((time) => {
-        //     lastFrame = time;
-        //     stepAmbient(time);
-        // });
+        window.requestAnimationFrame((time) => {
+            lastFrame = time;
+            stepAmbient(time);
+        });
 
         let lastScrollY = window.scrollY;
         let lastScrollTime = performance.now();
@@ -545,19 +556,22 @@
             }
         };
 
+        // Trackpad-friendly wheel handling
         const handleWheel = (event) => {
             if (isMobileColumn) {
-                if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-                    return;
+                // vertical mode: default vertical scroll; if horizontal input dominates, map to vertical
+                if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+                    event.preventDefault();
+                    viewport.scrollTo({ top: viewport.scrollTop + event.deltaX * 0.6, behavior: 'smooth' });
                 }
-                event.preventDefault();
-                viewport.scrollTo({ top: viewport.scrollTop + event.deltaX * 0.6, behavior: 'smooth' });
                 return;
             }
 
-            if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+            // horizontal mode: interpret either axis (deltaX or deltaY) as horizontal intent
+            const horiz = Math.abs(event.deltaX) >= Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+            if (horiz !== 0) {
                 event.preventDefault();
-                viewport.scrollTo({ left: viewport.scrollLeft + event.deltaX * 0.6, behavior: 'smooth' });
+                viewport.scrollTo({ left: viewport.scrollLeft + horiz * 0.6, behavior: 'smooth' });
             }
         };
 
@@ -595,8 +609,19 @@
         window.addEventListener('resize', () => {
             clampScroll();
             updateControls();
+            // keep single-card viewport height accurate on rotate/resize
+            syncViewportHeight();
         });
 
+        // Recompute viewport height if the first card’s size changes (images/fonts)
+        const firstObservedCard = track.querySelector('.card');
+        if ('ResizeObserver' in window && firstObservedCard) {
+            const ro = new ResizeObserver(() => syncViewportHeight());
+            ro.observe(firstObservedCard);
+        }
+
+        // Initial setup
+        syncViewportHeight();
         updateControls();
         setIconDirection();
         syncMobileState();

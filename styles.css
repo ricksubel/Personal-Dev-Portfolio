@@ -58,21 +58,23 @@ img {
   border: 2px solid transparent;
   border-radius: var(--radius-md);
   object-fit: cover;
-  background-image: linear-gradient(#0000, #0000),
-    linear-gradient(90deg, transparent, rgba(242, 159, 141, 0.88), transparent);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  background-size: 100% 100%, 220% 100%;
-  background-position: 0 0, -40% 50%;
-  animation: line-glide-border 16s linear infinite;
-  will-change: background-position;
+  background-color: rgba(4, 32, 36, 0.65);
 }
 
 .hero__media img,
-.split__media-img,
-img[data-selfie],
 .skills__portrait img {
-  border-width: 3px;
+  border-width: 4px;
+}
+
+.split__media-img,
+img[data-selfie] {
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.3);
+  background-color: rgba(7, 45, 50, 0.72);
+}
+
+.split__media-img {
+  border-width: 2px;
 }
 
 .visually-hidden {
@@ -540,11 +542,12 @@ img[data-selfie],
 }
 
 .split__content {
-  background: var(--color-surface-strong);
+  background: linear-gradient(135deg, rgba(2, 36, 38, 0.84), rgba(1, 18, 20, 0.94)),
+    url('Assets/BackgroundImage.jpeg') center/cover fixed;
   padding: clamp(24px, 5vw, 36px);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-elevated);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-accent);
   display: grid;
   gap: clamp(18px, 3vw, 24px);
   align-content: start;
@@ -593,8 +596,8 @@ img[data-selfie],
 @media (max-width: 599px) {
   body {
     background-attachment: scroll, scroll;
-    background-position: center, 50% 42%;
-    background-size: auto, 190%;
+    background-position: center, center;
+    background-size: auto, cover;
     background-repeat: no-repeat;
   }
 
@@ -607,20 +610,25 @@ img[data-selfie],
   }
 
   .split__media {
-    display: flex;
-    flex-wrap: wrap;
-    gap: clamp(14px, 5vw, 20px);
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(12px, 4vw, 18px);
+    justify-items: center;
+    margin-inline: auto;
+    width: min(340px, 100%);
   }
 
   .split__media-img {
-    flex: 1 1 min(46%, 180px);
-    max-width: min(48%, 200px);
+    width: min(120px, 42vw);
+    max-width: 120px;
   }
 
-  .split__media-img[data-selfie="7"] {
-    flex-basis: 100%;
-    max-width: min(280px, 92vw);
+  .split__content,
+  .skills__group {
+    background-attachment: scroll, scroll;
+    background-position: center, center;
+    background-size: auto, cover;
+    background-repeat: no-repeat;
   }
 
   .contact {
@@ -629,22 +637,12 @@ img[data-selfie],
     background-size: auto, 220%;
     background-repeat: no-repeat;
   }
-
-  .split__media-img {
-    display: none;
-  }
-
-  .split__media-img[data-selfie="2"],
-  .split__media-img[data-selfie="3"],
-  .split__media-img[data-selfie="7"] {
-    display: block;
-  }
 }
 
 @media (max-width: 430px) {
   body {
-    background-position: center, 50% 46%;
-    background-size: auto, 215%;
+    background-position: center, center;
+    background-size: auto, cover;
   }
 
   .contact {
@@ -702,7 +700,7 @@ img[data-selfie],
   max-width: clamp(260px, 30vw, 320px);
   scroll-snap-align: start;
   background: transparent !important;
-  border: none !important;
+  border: 2px solid var(--color-accent);
   box-shadow: none !important;
   position: relative;
 }
@@ -782,7 +780,7 @@ img[data-selfie],
     flex: 0 0 clamp(300px, 94vw, 380px);
     max-width: clamp(300px, 94vw, 380px);
     background: transparent !important;
-    border: none !important;
+    border: 2px solid var(--color-accent);
     box-shadow: none !important;
     border-radius: 28px;
     overflow: hidden;
@@ -868,28 +866,26 @@ img[data-selfie],
     transform: translateY(0);
   }
 
+  /* One card visible: height is set via JS to exactly the card height */
   .projects__viewport {
-    overflow: hidden;
-    max-height: clamp(380px, 72vh, 460px);
-    width: min(360px, 95vw);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex: none;
+    overflow-y: auto;
+    overflow-x: hidden;
     scroll-snap-type: y mandatory;
-    padding-inline: 0;
-    padding-block: clamp(12px, 5vw, 24px);
+    padding-block: 0;
+    width: min(360px, 95vw);
   }
 
   .projects__track {
     flex-direction: column;
     align-items: center;
-    gap: clamp(20px, 6vw, 32px);
+    gap: clamp(16px, 4vw, 24px);
     transition: transform var(--transition-slower);
   }
 
   .projects__track > .card {
     width: clamp(260px, 90vw, 320px);
-    scroll-snap-align: center;
+    scroll-snap-align: start;
   }
 
   .projects__track > .card img {
@@ -931,7 +927,7 @@ img[data-selfie],
   top: -22%;
   bottom: -22%;
   left: 50%;
-  width: 120vw;
+  width: min(1200px, 100vw);
   transform: translateX(-50%);
   overflow: hidden;
   pointer-events: none;
@@ -965,7 +961,7 @@ img[data-selfie],
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-elevated);
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 2px solid var(--color-accent);
   display: grid;
 }
 
@@ -1032,14 +1028,9 @@ img[data-selfie],
 .skills__group {
   border-radius: var(--radius-md);
   padding: clamp(24px, 4vw, 28px);
-  border: 2px solid transparent;
-  background-image: linear-gradient(rgba(3, 38, 43, 0.82), rgba(3, 38, 43, 0.82)),
-    linear-gradient(90deg, transparent, rgba(242, 159, 141, 0.82), transparent);
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-  background-size: 100% 100%, 240% 100%;
-  background-position: 0 0, -40% 50%;
-  animation: line-glide-border 20s linear infinite;
+  border: 2px solid var(--color-accent);
+  background: linear-gradient(135deg, rgba(2, 36, 38, 0.84), rgba(1, 18, 20, 0.94)),
+    url('Assets/BackgroundImage.jpeg') center/cover fixed;
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
 }
 
@@ -1101,7 +1092,7 @@ img[data-selfie],
   padding: clamp(32px, 6vw, 48px);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-elevated);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-accent);
 }
 
 .contact__content p {
