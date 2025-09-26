@@ -98,65 +98,65 @@
 
 
     // CLOSE MENU
-    const closeMenu = () => {
-        nav?.classList.remove('nav--open');
-        toggle?.setAttribute('aria-expanded', 'false');
-    };
+    // const closeMenu = () => {
+    //     nav?.classList.remove('nav--open');
+    //     toggle?.setAttribute('aria-expanded', 'false');
+    // };
 
-    toggle?.addEventListener('click', () => {
-        const isOpen = nav?.classList.toggle('nav--open');
-        toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
-    });
+    // toggle?.addEventListener('click', () => {
+    //     const isOpen = nav?.classList.toggle('nav--open');
+    //     toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+    // });
 
-    links?.forEach((link) => {
-        link.addEventListener('click', () => closeMenu());
-    });
+    // links?.forEach((link) => {
+    //     link.addEventListener('click', () => closeMenu());
+    // });
 
-    const brandLink = document.querySelector('.nav__brand');
-    brandLink?.addEventListener('click', (event) => {
-        event.preventDefault();
-        closeMenu();
+    // const brandLink = document.querySelector('.nav__brand');
+    // brandLink?.addEventListener('click', (event) => {
+    //     event.preventDefault();
+    //     closeMenu();
 
-        const pageTop = document.querySelector('#page-top');
-        if (pageTop) {
-            scrollToElement(pageTop);
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+    //     const pageTop = document.querySelector('#page-top');
+    //     if (pageTop) {
+    //         scrollToElement(pageTop);
+    //     } else {
+    //         window.scrollTo({ top: 0, behavior: 'smooth' });
+    //     }
 
-        clearHashFromUrl();
-    });
+    //     clearHashFromUrl();
+    // });
 
-    const internalAnchors = document.querySelectorAll('a[href^="#"]:not([href="#"]):not(.nav__brand)');
-    internalAnchors.forEach((anchor) => {
-        anchor.addEventListener('click', (event) => {
-            const href = anchor.getAttribute('href');
-            if (!href || href.length <= 1) return;
+    // const internalAnchors = document.querySelectorAll('a[href^="#"]:not([href="#"]):not(.nav__brand)');
+    // internalAnchors.forEach((anchor) => {
+    //     anchor.addEventListener('click', (event) => {
+    //         const href = anchor.getAttribute('href');
+    //         if (!href || href.length <= 1) return;
 
-            const targetId = href.slice(1);
-            const target = document.getElementById(targetId);
-            if (!target) return;
+    //         const targetId = href.slice(1);
+    //         const target = document.getElementById(targetId);
+    //         if (!target) return;
 
-            event.preventDefault();
-            if (anchor.classList.contains('nav__link')) {
-                closeMenu();
-            }
+    //         event.preventDefault();
+    //         if (anchor.classList.contains('nav__link')) {
+    //             closeMenu();
+    //         }
 
-            scrollToElement(target);
+    //         scrollToElement(target);
 
-            clearHashFromUrl();
-        });
-    });
+    //         clearHashFromUrl();
+    //     });
+    // });
 
-    window.addEventListener('scroll', () => {
-        if (header) {
-            header.classList.toggle('site-header--scrolled', window.scrollY > 24);
-        }
-    }, { passive: true });
+    // window.addEventListener('scroll', () => {
+    //     if (header) {
+    //         header.classList.toggle('site-header--scrolled', window.scrollY > 24);
+    //     }
+    // }, { passive: true });
 
-    backToTop?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    // backToTop?.addEventListener('click', () => {
+    //     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // });
 
     // CONTACT FORM SUBMIT BUTTON
     contactForm?.addEventListener('submit', (event) => {
@@ -173,6 +173,7 @@
         contactForm.reset();
     });
 
+    // CAROUSEL FUNCTIONS
     projectCarousels.forEach((carousel) => {
         const viewport = carousel.querySelector('.projects__viewport');
         const track = carousel.querySelector('.projects__track');
@@ -186,7 +187,7 @@
         ambient.setAttribute('aria-hidden', 'true');
         carousel.insertBefore(ambient, viewport);
 
-        // Create a set of thin accent lines that animate behind the carousel
+        // THIN ACCENT LINES ANIMATION
         const ambientLines = Array.from({ length: 28 }, () => {
             const el = document.createElement('span');
             el.className = 'projects__ambient-line';
@@ -249,37 +250,37 @@
         let scrollIdleTimeout = 0;
 
         // Animate lines horizontally, reacting to scroll speed and carousel focus
-        const stepAmbient = (time) => {
-            const delta = Math.min((time - lastFrame) / 1000, 0.045);
-            lastFrame = time;
+        // const stepAmbient = (time) => {
+        //     const delta = Math.min((time - lastFrame) / 1000, 0.045);
+        //     lastFrame = time;
 
-            targetBoost = Math.max(targetBoost * 0.9, 0);
-            currentBoost += (targetBoost - currentBoost) * 0.12;
-            focusCurrent += (focusTarget - focusCurrent) * 0.08;
+        //     targetBoost = Math.max(targetBoost * 0.9, 0);
+        //     currentBoost += (targetBoost - currentBoost) * 0.12;
+        //     focusCurrent += (focusTarget - focusCurrent) * 0.08;
 
-            const compositeSpeed = (baseSpeed + currentBoost) * Math.max(focusCurrent, 0.12);
+        //     const compositeSpeed = (baseSpeed + currentBoost) * Math.max(focusCurrent, 0.12);
 
-            ambientLines.forEach((line) => {
-                if (!isScrollActive) {
-                    line.x += compositeSpeed * line.speedScale * delta;
+        //     ambientLines.forEach((line) => {
+        //         if (!isScrollActive) {
+        //             line.x += compositeSpeed * line.speedScale * delta;
 
-                    const exitThreshold = ambientWidth + line.lengthPx * 1.3;
-                    if (line.x > exitThreshold) {
-                        line.x = -line.lengthPx - Math.random() * ambientWidth * 0.25;
-                        line.el.style.top = `${Math.random() * 100}%`;
-                    }
-                }
+        //             const exitThreshold = ambientWidth + line.lengthPx * 1.3;
+        //             if (line.x > exitThreshold) {
+        //                 line.x = -line.lengthPx - Math.random() * ambientWidth * 0.25;
+        //                 line.el.style.top = `${Math.random() * 100}%`;
+        //             }
+        //         }
 
-                line.el.style.transform = `translate3d(${line.x}px, 0, 0)`;
-            });
+        //         line.el.style.transform = `translate3d(${line.x}px, 0, 0)`;
+        //     });
 
-            window.requestAnimationFrame(stepAmbient);
-        };
+        //     window.requestAnimationFrame(stepAmbient);
+        // };
 
-        window.requestAnimationFrame((time) => {
-            lastFrame = time;
-            stepAmbient(time);
-        });
+        // window.requestAnimationFrame((time) => {
+        //     lastFrame = time;
+        //     stepAmbient(time);
+        // });
 
         let lastScrollY = window.scrollY;
         let lastScrollTime = performance.now();
@@ -382,6 +383,8 @@
         updateControls();
     });
 
+
+    // BACK-TO-TOP ARROW BUTTON REVEAL
     if (backToTop && skillsSection) {
         const toggleBackToTop = (entries) => {
             entries.forEach((entry) => {
@@ -398,6 +401,7 @@
         observer.observe(skillsSection);
     }
 
+    // BACK-TO-TOP ARROW BUTTON FUNCTION
     if (backToTop && contactSection) {
         const triggerPulse = (entries) => {
             entries.forEach((entry) => {
