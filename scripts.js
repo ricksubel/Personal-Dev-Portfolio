@@ -14,8 +14,8 @@
     const heroSection = document.querySelector('.hero');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const projectCarousels = document.querySelectorAll('[data-carousel]');
-    const skillsSection = document.querySelector('#skills');
-    const contactSection = document.querySelector('#contact');
+    const skillsSection = document.querySelector('#section-skills');
+    const contactSection = document.querySelector('#section-contact');
 
     if (yearEl) {
         yearEl.textContent = new Date().getFullYear();
@@ -91,13 +91,40 @@
     brandLink?.addEventListener('click', (event) => {
         event.preventDefault();
         closeMenu();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        const pageTop = document.querySelector('#page-top');
+        if (pageTop) {
+            pageTop.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         if (history.replaceState) {
-            history.replaceState(null, '', '#top');
-        } else {
-            window.location.hash = '#top';
+            history.replaceState(null, '', window.location.pathname + window.location.search);
         }
+    });
+
+    const internalAnchors = document.querySelectorAll('a[href^="#"]:not([href="#"]):not(.nav__brand)');
+    internalAnchors.forEach((anchor) => {
+        anchor.addEventListener('click', (event) => {
+            const href = anchor.getAttribute('href');
+            if (!href || href.length <= 1) return;
+
+            const targetId = href.slice(1);
+            const target = document.getElementById(targetId);
+            if (!target) return;
+
+            event.preventDefault();
+            if (anchor.classList.contains('nav__link')) {
+                closeMenu();
+            }
+
+            target.scrollIntoView({ behavior: 'smooth' });
+
+            if (history.replaceState) {
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+        });
     });
 
     window.addEventListener('scroll', () => {
