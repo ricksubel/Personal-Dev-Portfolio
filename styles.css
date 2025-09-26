@@ -487,6 +487,7 @@ img[data-selfie],
     width: min(220px, 80%);
     align-self: center;
     justify-self: center;
+    margin-inline: auto;
   }
 
   .hero__content {
@@ -522,6 +523,7 @@ img[data-selfie],
     font-size: 0.82rem;
     padding: 0.5rem 1.05rem;
     justify-self: center;
+    margin-inline: auto;
   }
 }
 
@@ -591,8 +593,8 @@ img[data-selfie],
 @media (max-width: 599px) {
   body {
     background-attachment: scroll, scroll;
-    background-position: center, 50% 38%;
-    background-size: auto, cover;
+    background-position: center, 50% 42%;
+    background-size: auto, 190%;
     background-repeat: no-repeat;
   }
 
@@ -605,25 +607,26 @@ img[data-selfie],
   }
 
   .split__media {
-    grid-template-columns: repeat(2, minmax(120px, 1fr));
-    justify-items: stretch;
+    display: flex;
+    flex-wrap: wrap;
     gap: clamp(14px, 5vw, 20px);
+    justify-content: center;
   }
 
   .split__media-img {
-    width: 100%;
+    flex: 1 1 min(46%, 180px);
+    max-width: min(48%, 200px);
   }
 
   .split__media-img[data-selfie="7"] {
-    grid-column: 1 / -1;
-    justify-self: center;
-    max-width: min(240px, 82vw);
+    flex-basis: 100%;
+    max-width: min(280px, 92vw);
   }
 
   .contact {
     background-attachment: scroll, scroll;
-    background-position: center, 50% 42%;
-    background-size: auto, cover;
+    background-position: center, 50% 46%;
+    background-size: auto, 220%;
     background-repeat: no-repeat;
   }
 
@@ -640,13 +643,13 @@ img[data-selfie],
 
 @media (max-width: 430px) {
   body {
-    background-position: center, 50% 44%;
-    background-size: auto, cover;
+    background-position: center, 50% 46%;
+    background-size: auto, 215%;
   }
 
   .contact {
-    background-position: center, 50% 48%;
-    background-size: auto, cover;
+    background-position: center, 50% 50%;
+    background-size: auto, 260%;
   }
 }
 
