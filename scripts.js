@@ -1,7 +1,9 @@
 // JAVASCRIPT CODE
 
-// FORM CONTROL FOR CONTACT SECTION
+
+
 (() => {
+    // DOCUMENT SEARCH FOR ANY/ALL FUNCTIONS BELOW
     const header = document.querySelector('.site-header');
     const nav = document.querySelector('.nav');
     const toggle = document.querySelector('.nav__toggle');
@@ -14,11 +16,31 @@
     const heroSection = document.querySelector('.hero');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const projectCarousels = document.querySelectorAll('[data-carousel]');
-    const skillsSection = document.querySelector('#section-skills');
-    const contactSection = document.querySelector('#section-contact');
+    const skillsSection = document.querySelector('#skills');
+    const contactSection = document.querySelector('#contact');
+
+    const sectionSlugMap = {
+        about: 'about',
+        projects: 'projects',
+        skills: 'skills',
+        contact: 'contact',
+    };
+
+    const slugToSectionId = Object.entries(sectionSlugMap).reduce((accumulator, [sectionId, slug]) => {
+        accumulator[slug] = sectionId;
+        return accumulator;
+    }, {});
+
+    const knownSlugs = new Set(Object.values(sectionSlugMap));
+    const supportsCleanUrls = typeof history?.pushState === 'function' && ['http:', 'https:'].includes(window.location.protocol);
+
+    const normalizePathname = (path) => {
+        if (!path) return '/';
+        return path.length > 1 ? path.replace(/\/+$/, '') : path;
+    };
 
     const clearHashFromUrl = () => {
-        if (!history.replaceState) return;
+        if (!supportsCleanUrls) return;
         history.replaceState(null, '', window.location.pathname + window.location.search);
     };
 
@@ -27,15 +49,115 @@
         element.scrollIntoView({ behavior, block: 'start' });
     };
 
-    if (window.location.hash) {
-        const initialId = window.location.hash.slice(1);
-        const initialTarget = initialId ? document.getElementById(initialId) : null;
+    const getSlugFromPath = (path) => {
+        if (!supportsCleanUrls) return '';
+        const normalized = normalizePathname(path);
+        const segments = normalized.split('/').filter(Boolean);
+        if (!segments.length) return '';
+        const finalSegment = segments[segments.length - 1];
+        return knownSlugs.has(finalSegment) ? finalSegment : '';
+    };
 
-        if (initialTarget) {
-            requestAnimationFrame(() => scrollToElement(initialTarget, 'auto'));
+    const originalPath = supportsCleanUrls ? normalizePathname(window.location.pathname || '/') : '/';
+    const pathSegments = supportsCleanUrls ? originalPath.split('/').filter(Boolean) : [];
+
+    let initialSlug = '';
+    if (supportsCleanUrls && pathSegments.length) {
+        const lastSegment = pathSegments[pathSegments.length - 1];
+        if (knownSlugs.has(lastSegment)) {
+            initialSlug = lastSegment;
+        }
+    }
+
+    const baseSegments = supportsCleanUrls ? (() => {
+        if (!pathSegments.length) return [];
+        const segments = [...pathSegments];
+        const lastSegment = segments[segments.length - 1];
+
+        if (knownSlugs.has(lastSegment) || /\.[^/]+$/.test(lastSegment)) {
+            segments.pop();
         }
 
-        clearHashFromUrl();
+        return segments;
+    })() : [];
+
+    const homePath = supportsCleanUrls && baseSegments.length ? `/${baseSegments.join('/')}` : '/';
+
+    const buildPath = supportsCleanUrls ? (slug) => {
+        if (!slug) {
+            return homePath || '/';
+        }
+
+        if (homePath === '/' || !homePath) {
+            return `/${slug}`;
+        }
+
+        const trimmedHome = homePath.replace(/\/+$/, '');
+        return `${trimmedHome}/${slug}`;
+    } : () => window.location.pathname;
+
+    const updateHistoryForSlug = supportsCleanUrls
+        ? (slug, { replace = false } = {}) => {
+            const method = replace ? 'replaceState' : 'pushState';
+            if (!history[method]) return;
+
+            const targetPath = buildPath(slug);
+            history[method](null, '', `${targetPath}${window.location.search || ''}`);
+        }
+        : (slug) => {
+            if (!slug) {
+                if (window.location.hash) {
+                    window.location.hash = '';
+                }
+                return;
+            }
+            window.location.hash = `#${slug}`;
+        };
+
+    const scrollToHome = (behavior = 'smooth') => {
+        const homeSection = document.getElementById('home');
+        if (homeSection) {
+            scrollToElement(homeSection, behavior);
+        } else {
+            window.scrollTo({ top: 0, behavior });
+        }
+    };
+
+    const scrollToSectionBySlug = (slug, behavior = 'smooth') => {
+        if (!slug) {
+            scrollToHome(behavior);
+            return;
+        }
+
+        const sectionId = slugToSectionId[slug];
+        if (!sectionId) return;
+        const target = document.getElementById(sectionId);
+        scrollToElement(target, behavior);
+    };
+
+    if (supportsCleanUrls) {
+        if (initialSlug) {
+            requestAnimationFrame(() => scrollToSectionBySlug(initialSlug, 'auto'));
+
+            const expectedPath = buildPath(initialSlug);
+            if (window.location.pathname !== expectedPath) {
+                updateHistoryForSlug(initialSlug, { replace: true });
+            }
+        } else if (window.location.hash) {
+            const initialId = window.location.hash.slice(1);
+            const initialTarget = initialId ? document.getElementById(initialId) : null;
+
+            if (initialTarget) {
+                requestAnimationFrame(() => scrollToElement(initialTarget, 'auto'));
+            }
+
+            const slug = sectionSlugMap[initialId];
+            if (slug) {
+                updateHistoryForSlug(slug, { replace: true });
+            } else {
+                clearHashFromUrl();
+            }
+        }
     }
 
     if (yearEl) {
@@ -67,15 +189,13 @@
                 assignRandomMotion(span);
                 eyebrow.appendChild(span);
                 createdLetters.push(span);
-    });
+            });
 
-
-            // EYEBROW ANIMTION 
             if (!prefersReducedMotion.matches && heroSection) {
                 const playEyebrowAnimation = () => {
                     createdLetters.forEach(assignRandomMotion);
                     eyebrow.classList.remove('is-animating');
-                    void eyebrow.offsetWidth; // force reflow to restart animation
+                    void eyebrow.offsetWidth;
                     eyebrow.classList.add('is-animating');
                 };
 
@@ -96,67 +216,71 @@
         }
     }
 
+    const closeMenu = () => {
+        nav?.classList.remove('nav--open');
+        toggle?.setAttribute('aria-expanded', 'false');
+    };
 
-    // CLOSE MENU
-    // const closeMenu = () => {
-    //     nav?.classList.remove('nav--open');
-    //     toggle?.setAttribute('aria-expanded', 'false');
-    // };
+    toggle?.addEventListener('click', () => {
+        const isOpen = nav?.classList.toggle('nav--open');
+        toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+    });
 
-    // toggle?.addEventListener('click', () => {
-    //     const isOpen = nav?.classList.toggle('nav--open');
-    //     toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
-    // });
+    links?.forEach((link) => {
+        link.addEventListener('click', () => closeMenu());
+    });
 
-    // links?.forEach((link) => {
-    //     link.addEventListener('click', () => closeMenu());
-    // });
+    const brandLink = document.querySelector('.nav__brand');
+    brandLink?.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeMenu();
+        scrollToHome();
+        updateHistoryForSlug('', { replace: false });
+    });
 
-    // const brandLink = document.querySelector('.nav__brand');
-    // brandLink?.addEventListener('click', (event) => {
-    //     event.preventDefault();
-    //     closeMenu();
+    const internalAnchors = document.querySelectorAll('a[href^="#"]:not([href="#"]):not(.nav__brand)');
+    internalAnchors.forEach((anchor) => {
+        anchor.addEventListener('click', (event) => {
+            const href = anchor.getAttribute('href');
+            if (!href || href.length <= 1) return;
 
-    //     const pageTop = document.querySelector('#page-top');
-    //     if (pageTop) {
-    //         scrollToElement(pageTop);
-    //     } else {
-    //         window.scrollTo({ top: 0, behavior: 'smooth' });
-    //     }
+            const targetId = href.slice(1);
+            const target = document.getElementById(targetId);
+            if (!target) return;
 
-    //     clearHashFromUrl();
-    // });
+            event.preventDefault();
+            if (anchor.classList.contains('nav__link')) {
+                closeMenu();
+            }
 
-    // const internalAnchors = document.querySelectorAll('a[href^="#"]:not([href="#"]):not(.nav__brand)');
-    // internalAnchors.forEach((anchor) => {
-    //     anchor.addEventListener('click', (event) => {
-    //         const href = anchor.getAttribute('href');
-    //         if (!href || href.length <= 1) return;
+            scrollToElement(target);
 
-    //         const targetId = href.slice(1);
-    //         const target = document.getElementById(targetId);
-    //         if (!target) return;
+            const slug = sectionSlugMap[targetId];
+            if (typeof slug === 'string') {
+                updateHistoryForSlug(slug);
+            }
+        });
+    });
 
-    //         event.preventDefault();
-    //         if (anchor.classList.contains('nav__link')) {
-    //             closeMenu();
-    //         }
+    backToTop?.addEventListener('click', () => {
+        scrollToHome();
+        updateHistoryForSlug('', { replace: false });
+    });
 
-    //         scrollToElement(target);
+    if (supportsCleanUrls) {
+        window.addEventListener('popstate', () => {
+            const slug = getSlugFromPath(window.location.pathname);
+            if (slug) {
+                scrollToSectionBySlug(slug, 'auto');
+            } else {
+                scrollToHome('auto');
+            }
+        });
+    }
 
-    //         clearHashFromUrl();
-    //     });
-    // });
+ 
 
-    // window.addEventListener('scroll', () => {
-    //     if (header) {
-    //         header.classList.toggle('site-header--scrolled', window.scrollY > 24);
-    //     }
-    // }, { passive: true });
 
-    // backToTop?.addEventListener('click', () => {
-    //     window.scrollTo({ top: 0, behavior: 'smooth' });
-    // });
 
     // CONTACT FORM SUBMIT BUTTON
     contactForm?.addEventListener('submit', (event) => {
