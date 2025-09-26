@@ -119,6 +119,132 @@
 
         if (!viewport || !track || !prevBtn || !nextBtn) return;
 
+        const ambient = document.createElement('div');
+        ambient.className = 'projects__ambient';
+        ambient.setAttribute('aria-hidden', 'true');
+        carousel.insertBefore(ambient, viewport);
+
+        // Create a set of thin accent lines that animate behind the carousel
+        const ambientLines = Array.from({ length: 28 }, () => {
+            const el = document.createElement('span');
+            el.className = 'projects__ambient-line';
+            const height = 1 + Math.random() * 1.5;
+            const opacity = 0.4 + Math.random() * 0.35;
+            const lengthFactor = 0.2 + Math.random() * 0.65;
+            const speedScale = 0.18 + Math.random() * 2.2;
+
+            el.style.height = `${height.toFixed(2)}px`;
+            el.style.opacity = opacity.toFixed(2);
+            el.style.top = `${Math.random() * 100}%`;
+            ambient.appendChild(el);
+
+            return {
+                el,
+                lengthFactor,
+                speedScale,
+                x: 0,
+                lengthPx: 0,
+                initialized: false,
+            };
+        });
+
+        let ambientWidth = 1;
+        const syncAmbientMetrics = () => {
+            const rect = ambient.getBoundingClientRect();
+            ambientWidth = rect.width || viewport.clientWidth || 1;
+
+            ambientLines.forEach((line) => {
+                line.lengthPx = Math.max(ambientWidth * line.lengthFactor, 48);
+                line.el.style.width = `${line.lengthPx}px`;
+
+                if (!line.initialized) {
+                    line.x = Math.random() * ambientWidth;
+                    line.initialized = true;
+                } else {
+                    line.x = Math.min(line.x, ambientWidth);
+                }
+
+                line.el.style.transform = `translate3d(${line.x}px, 0, 0)`;
+            });
+        };
+
+        syncAmbientMetrics();
+
+        if (window.ResizeObserver) {
+            const ambientResizeObserver = new ResizeObserver(() => syncAmbientMetrics());
+            ambientResizeObserver.observe(ambient);
+        } else {
+            window.addEventListener('resize', syncAmbientMetrics);
+        }
+
+        const baseSpeed = 28;
+        let lastFrame = performance.now();
+        let currentBoost = 0;
+        let targetBoost = 0;
+        let focusCurrent = 1;
+        let focusTarget = 1;
+
+        // Animate lines horizontally, reacting to scroll speed and carousel focus
+        const stepAmbient = (time) => {
+            const delta = Math.min((time - lastFrame) / 1000, 0.045);
+            lastFrame = time;
+
+            targetBoost = Math.max(targetBoost * 0.9, 0);
+            currentBoost += (targetBoost - currentBoost) * 0.12;
+            focusCurrent += (focusTarget - focusCurrent) * 0.08;
+
+            const compositeSpeed = (baseSpeed + currentBoost) * Math.max(focusCurrent, 0.12);
+
+            ambientLines.forEach((line) => {
+                line.x += compositeSpeed * line.speedScale * delta;
+
+                const exitThreshold = ambientWidth + line.lengthPx * 1.3;
+                if (line.x > exitThreshold) {
+                    line.x = -line.lengthPx - Math.random() * ambientWidth * 0.25;
+                    line.el.style.top = `${Math.random() * 100}%`;
+                }
+
+                line.el.style.transform = `translate3d(${line.x}px, 0, 0)`;
+            });
+
+            window.requestAnimationFrame(stepAmbient);
+        };
+
+        window.requestAnimationFrame((time) => {
+            lastFrame = time;
+            stepAmbient(time);
+        });
+
+        let lastScrollY = window.scrollY;
+        let lastScrollTime = performance.now();
+
+        const handleAmbientScroll = () => {
+            const now = performance.now();
+            const deltaY = Math.abs(window.scrollY - lastScrollY);
+            const deltaT = Math.max(now - lastScrollTime, 16);
+            const velocity = deltaY / deltaT;
+
+            targetBoost = Math.min(velocity * 1600, 160);
+
+            lastScrollY = window.scrollY;
+            lastScrollTime = now;
+        };
+
+        window.addEventListener('scroll', handleAmbientScroll, { passive: true });
+
+        const slowAmbient = () => {
+            focusTarget = 0.35;
+        };
+
+        const restoreAmbient = () => {
+            focusTarget = 1;
+        };
+
+        viewport.addEventListener('mouseenter', slowAmbient);
+        viewport.addEventListener('mouseleave', restoreAmbient);
+        viewport.addEventListener('focusin', slowAmbient);
+        viewport.addEventListener('focusout', restoreAmbient);
+
         const getStep = () => {
             const firstCard = track.querySelector('.card');
             if (!firstCard) return viewport.clientWidth;
