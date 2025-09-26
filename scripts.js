@@ -67,8 +67,10 @@
                 assignRandomMotion(span);
                 eyebrow.appendChild(span);
                 createdLetters.push(span);
-            });
+    });
 
+
+            // EYEBROW ANIMTION 
             if (!prefersReducedMotion.matches && heroSection) {
                 const playEyebrowAnimation = () => {
                     createdLetters.forEach(assignRandomMotion);
@@ -94,6 +96,8 @@
         }
     }
 
+
+    // CLOSE MENU
     const closeMenu = () => {
         nav?.classList.remove('nav--open');
         toggle?.setAttribute('aria-expanded', 'false');
@@ -154,6 +158,7 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
+    // CONTACT FORM SUBMIT BUTTON
     contactForm?.addEventListener('submit', (event) => {
         event.preventDefault();
         const data = new FormData(contactForm);
