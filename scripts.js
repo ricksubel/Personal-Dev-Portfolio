@@ -87,6 +87,19 @@
         link.addEventListener('click', () => closeMenu());
     });
 
+    const brandLink = document.querySelector('.nav__brand');
+    brandLink?.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeMenu();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        if (history.replaceState) {
+            history.replaceState(null, '', '#top');
+        } else {
+            window.location.hash = '#top';
+        }
+    });
+
     window.addEventListener('scroll', () => {
         if (header) {
             header.classList.toggle('site-header--scrolled', window.scrollY > 24);
@@ -183,6 +196,8 @@
         let targetBoost = 0;
         let focusCurrent = 1;
         let focusTarget = 1;
+        let isScrollActive = false;
+        let scrollIdleTimeout = 0;
 
         // Animate lines horizontally, reacting to scroll speed and carousel focus
         const stepAmbient = (time) => {
@@ -196,12 +211,14 @@
             const compositeSpeed = (baseSpeed + currentBoost) * Math.max(focusCurrent, 0.12);
 
             ambientLines.forEach((line) => {
-                line.x += compositeSpeed * line.speedScale * delta;
+                if (!isScrollActive) {
+                    line.x += compositeSpeed * line.speedScale * delta;
 
-                const exitThreshold = ambientWidth + line.lengthPx * 1.3;
-                if (line.x > exitThreshold) {
-                    line.x = -line.lengthPx - Math.random() * ambientWidth * 0.25;
-                    line.el.style.top = `${Math.random() * 100}%`;
+                    const exitThreshold = ambientWidth + line.lengthPx * 1.3;
+                    if (line.x > exitThreshold) {
+                        line.x = -line.lengthPx - Math.random() * ambientWidth * 0.25;
+                        line.el.style.top = `${Math.random() * 100}%`;
+                    }
                 }
 
                 line.el.style.transform = `translate3d(${line.x}px, 0, 0)`;
@@ -225,6 +242,15 @@
             const velocity = deltaY / deltaT;
 
             targetBoost = Math.min(velocity * 1600, 160);
+
+            if (!isScrollActive) {
+                isScrollActive = true;
+            }
+
+            window.clearTimeout(scrollIdleTimeout);
+            scrollIdleTimeout = window.setTimeout(() => {
+                isScrollActive = false;
+            }, 160);
 
             lastScrollY = window.scrollY;
             lastScrollTime = now;

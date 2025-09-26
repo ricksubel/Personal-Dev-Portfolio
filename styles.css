@@ -138,41 +138,79 @@ img[data-selfie],
   opacity: 0.9;
 }
 
+
 .eyebrow {
+  --eyebrow-letter-spacing: 0.12em;
+  --eyebrow-gap: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.32em;
-  font-size: 24px;
-  font-weight: 500;
+  letter-spacing: var(--eyebrow-letter-spacing);
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 600;
   color: var(--color-accent);
   display: inline-flex;
-  gap: 0.15em;
+  gap: var(--eyebrow-gap);
   position: relative;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
+  max-width: min(520px, 100%);
+  margin-inline: 0;
+}
+
+.eyebrow.is-animating {
+  animation: eyebrow-drop 0.9s cubic-bezier(0.16, 0.85, 0.36, 1) forwards;
 }
 
 .eyebrow__letter {
   display: inline-block;
   opacity: 0;
-  transform: translate(var(--float-x, 0), var(--float-y, 18px)) scale(0.92);
+  transform: translate(var(--float-x, 0), var(--float-y, 18px)) scale(1.2);
 }
 
 .eyebrow.is-animating .eyebrow__letter {
-  animation: eyebrow-float-in 0.85s var(--float-delay, 0s) ease-out forwards;
+  animation: eyebrow-float-in 0.95s var(--float-delay, 0s) ease-out forwards;
 }
 
 @keyframes eyebrow-float-in {
   0% {
     opacity: 0;
-    transform: translate(var(--float-x, 0), var(--float-y, 18px)) scale(0.92);
+    transform: translate(var(--float-x, 0), var(--float-y, 18px)) scale(1.35);
   }
-  60% {
+  55% {
     opacity: 1;
-    transform: translate(calc(var(--float-x, 0) * 0.24), calc(var(--float-y, 18px) * 0.24)) scale(1.04);
+    transform: translate(calc(var(--float-x, 0) * 0.1), calc(var(--float-y, 18px) * 0.1)) scale(1.05);
+  }
+  75% {
+    transform: translate(calc(var(--float-x, 0) * -0.04), calc(var(--float-y, 18px) * -0.04)) scale(0.98);
   }
   100% {
     opacity: 1;
     transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes eyebrow-drop {
+  0% {
+    transform: translateY(-32px) scale(1.06);
+    opacity: 0;
+    letter-spacing: calc(var(--eyebrow-letter-spacing) + 0.24em);
+    gap: calc(var(--eyebrow-gap) + 0.1em);
+  }
+  45% {
+    transform: translateY(6px) scale(0.99);
+    opacity: 1;
+    letter-spacing: calc(var(--eyebrow-letter-spacing) + 0.12em);
+    gap: calc(var(--eyebrow-gap) + 0.06em);
+  }
+  72% {
+    transform: translateY(-2px) scale(1.01);
+    letter-spacing: calc(var(--eyebrow-letter-spacing) + 0.04em);
+    gap: calc(var(--eyebrow-gap) + 0.02em);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    letter-spacing: var(--eyebrow-letter-spacing);
+    gap: var(--eyebrow-gap);
   }
 }
 
@@ -184,6 +222,10 @@ img[data-selfie],
   }
 
   .eyebrow.is-animating .eyebrow__letter {
+    animation: none;
+  }
+
+  .eyebrow.is-animating {
     animation: none;
   }
 }
@@ -355,7 +397,9 @@ img[data-selfie],
 
 /* HERO SECTION ------------------------------------------- */
 .hero {
-  padding-top: clamp(96px, 15vw, 140px);
+  padding-top: clamp(48px, 9vw, 96px);
+  padding-bottom: clamp(64px, 10vw, 108px);
+  overflow-x: clip;
 }
 
 .hero__grid {
@@ -450,9 +494,11 @@ img[data-selfie],
   }
 
   .eyebrow {
-    font-size: clamp(16px, 4.6vw, 18px);
-    letter-spacing: 0.18em;
+    --eyebrow-letter-spacing: 0.11em;
+    --eyebrow-gap: 0.065em;
+    font-size: clamp(22px, 6vw, 26px);
     justify-content: center;
+    margin-inline: auto;
   }
 }
 
