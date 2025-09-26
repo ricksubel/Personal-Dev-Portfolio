@@ -303,8 +303,59 @@
         const track = carousel.querySelector('.projects__track');
         const prevBtn = carousel.querySelector('.projects__nav--prev');
         const nextBtn = carousel.querySelector('.projects__nav--next');
+        const prevIcon = prevBtn?.querySelector('i');
+        const nextIcon = nextBtn?.querySelector('i');
 
         if (!viewport || !track || !prevBtn || !nextBtn) return;
+
+        const getIsMobileColumn = () => window.matchMedia('(max-width: 640px)').matches;
+        let isMobileColumn = getIsMobileColumn();
+
+        const setIconDirection = () => {
+            if (!prevIcon || !nextIcon) return;
+
+            if (isMobileColumn) {
+                prevIcon.classList.remove('fa-chevron-left', 'fa-chevron-right', 'fa-chevron-down');
+                prevIcon.classList.add('fa-chevron-up');
+                nextIcon.classList.remove('fa-chevron-left', 'fa-chevron-right', 'fa-chevron-up');
+                nextIcon.classList.add('fa-chevron-down');
+            } else {
+                prevIcon.classList.remove('fa-chevron-up', 'fa-chevron-right', 'fa-chevron-down');
+                prevIcon.classList.add('fa-chevron-left');
+                nextIcon.classList.remove('fa-chevron-up', 'fa-chevron-left', 'fa-chevron-down');
+                nextIcon.classList.add('fa-chevron-right');
+            }
+        };
+
+        const syncMobileState = () => {
+            const nextState = getIsMobileColumn();
+            if (nextState === isMobileColumn) {
+                return;
+            }
+
+            isMobileColumn = nextState;
+
+            setIconDirection();
+
+            if (isMobileColumn) {
+                viewport.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                updateControls();
+            } else {
+                viewport.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                updateControls();
+            }
+        };
+
+        const resizeWatcher = window.matchMedia('(max-width: 640px)');
+        resizeWatcher.addEventListener('change', syncMobileState, { passive: true });
+
+        const getCardHeight = () => {
+            const firstCard = track.querySelector('.card');
+            if (!firstCard) return viewport.clientHeight;
+            const styles = window.getComputedStyle(track);
+            const gap = parseFloat(styles.rowGap || styles.gap || '0');
+            return firstCard.getBoundingClientRect().height + gap;
+        };
 
         const ambient = document.createElement('div');
         ambient.className = 'projects__ambient';
@@ -446,6 +497,10 @@
         viewport.addEventListener('focusout', restoreAmbient);
 
         const getStep = () => {
+            if (isMobileColumn) {
+                return getCardHeight();
+            }
+
             const firstCard = track.querySelector('.card');
             if (!firstCard) return viewport.clientWidth;
             const styles = window.getComputedStyle(track);
@@ -454,6 +509,14 @@
         };
 
         const clampScroll = () => {
+            if (isMobileColumn) {
+                const maxScroll = viewport.scrollHeight - viewport.clientHeight;
+                if (viewport.scrollTop > maxScroll) {
+                    viewport.scrollTop = maxScroll;
+                }
+                return;
+            }
+
             const maxScroll = viewport.scrollWidth - viewport.clientWidth;
             if (viewport.scrollLeft > maxScroll) {
                 viewport.scrollLeft = maxScroll;
@@ -461,6 +524,13 @@
         };
 
         const updateControls = () => {
+            if (isMobileColumn) {
+                const maxScroll = viewport.scrollHeight - viewport.clientHeight - 2;
+                prevBtn.disabled = viewport.scrollTop <= 2;
+                nextBtn.disabled = viewport.scrollTop >= maxScroll;
+                return;
+            }
+
             const maxScroll = viewport.scrollWidth - viewport.clientWidth - 2;
             prevBtn.disabled = viewport.scrollLeft <= 2;
             nextBtn.disabled = viewport.scrollLeft >= maxScroll;
@@ -468,10 +538,23 @@
 
         const scrollByStep = (direction) => {
             const amount = getStep() * direction;
-            viewport.scrollTo({ left: viewport.scrollLeft + amount, behavior: 'smooth' });
+            if (isMobileColumn) {
+                viewport.scrollTo({ top: viewport.scrollTop + amount, left: 0, behavior: 'smooth' });
+            } else {
+                viewport.scrollTo({ left: viewport.scrollLeft + amount, top: 0, behavior: 'smooth' });
+            }
         };
 
         const handleWheel = (event) => {
+            if (isMobileColumn) {
+                if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+                    return;
+                }
+                event.preventDefault();
+                viewport.scrollTo({ top: viewport.scrollTop + event.deltaX * 0.6, behavior: 'smooth' });
+                return;
+            }
+
             if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
                 event.preventDefault();
                 viewport.scrollTo({ left: viewport.scrollLeft + event.deltaX * 0.6, behavior: 'smooth' });
@@ -483,10 +566,20 @@
 
         viewport.addEventListener('keydown', (event) => {
             if (event.key === 'ArrowRight') {
+                if (isMobileColumn) return;
                 event.preventDefault();
                 scrollByStep(1);
             }
             if (event.key === 'ArrowLeft') {
+                if (isMobileColumn) return;
+                event.preventDefault();
+                scrollByStep(-1);
+            }
+            if (event.key === 'ArrowDown' && isMobileColumn) {
+                event.preventDefault();
+                scrollByStep(1);
+            }
+            if (event.key === 'ArrowUp' && isMobileColumn) {
                 event.preventDefault();
                 scrollByStep(-1);
             }
@@ -505,6 +598,8 @@
         });
 
         updateControls();
+        setIconDirection();
+        syncMobileState();
     });
 
 
