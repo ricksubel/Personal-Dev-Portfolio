@@ -587,6 +587,30 @@ img[data-selfie],
 }
 
 @media (max-width: 599px) {
+  body {
+    background-attachment: scroll, scroll;
+    background-position: center, 50% 28%;
+    background-size: auto, 140%;
+  }
+
+  .hero__grid {
+    justify-items: center;
+  }
+
+  .hero__media {
+    justify-self: center;
+  }
+
+  .split__media {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    row-gap: clamp(16px, 6vw, 24px);
+  }
+
+  .split__media-img {
+    width: min(260px, 80vw);
+  }
+
   .split__media-img {
     display: none;
   }
