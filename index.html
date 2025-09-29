@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Rick Subel | Design</title>
+  <!-- force all redirect to ricksubel.dev -->
+  <link rel="canonical" href="https://ricksubel.dev/" />
+  <!-- Google reCAPTCHA v2 -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <!-- My Custom Stylesheet -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -239,7 +245,20 @@
             <li><a href="https://github.com/ricksubel" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a></li>
           </ul>
         </div>
-        <form class="contact__form" id="contact-form">
+
+        <form id="contact-form" class="needs-validation" novalidate>
+          <!-- Honeypot -->
+          <input
+            type="text"
+            name="company"
+            id="contact-company"
+            class="honeyfield"
+            aria-hidden="true"
+            tabindex="-1"
+            autocomplete="off"
+            inputmode="none"
+          />
+
           <label class="form__field">
             <span>Name</span>
             <input type="text" name="name" placeholder="what's your name?" required />
@@ -252,9 +271,23 @@
             <span>Project or message</span>
             <textarea name="message" rows="4" placeholder="what are you interested in building?" required></textarea>
           </label>
+          <!-- reCAPTCHA widget -->
+          <div class="g-recaptcha" 
+            data-sitekey="6LcPGNkrAAAAALq5MVpNQDKp0uW0IFZZFL1C4XaQ"
+            data-callback="onRecaptchaSuccess"
+            data-theme="dark">
+
+          </div>
           <button type="submit" class="btn">Send Message</button>
           <p class="form__note">I’ll follow up via email within two business days.</p>
+
+          <!-- Alert -->
+          <div class="col-12">
+            <div id="contact-alert" class="alert d-none" role="alert" aria-live="polite"></div>
+          </div>
         </form>
+
+
       </div>
     </section>
     
@@ -276,6 +309,13 @@
     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
   </button>
 
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function () {
+      // EMAIL.JS PUBLIC KEY
+      emailjs.init('6ZH-t6dPtUfKUV-HB');
+    })();
+  </script>
   <script src="scripts.js" defer></script>
 </body>
 </html>

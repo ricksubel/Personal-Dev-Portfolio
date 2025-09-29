@@ -1,7 +1,5 @@
 // JAVASCRIPT CODE
 
-
-
 (() => {
     // DOCUMENT SEARCH FOR ANY/ALL FUNCTIONS BELOW
     const header = document.querySelector('.site-header');
@@ -278,24 +276,99 @@
         });
     }
 
- 
 
+    // CONTACT FORM: EmailJS send, Whitelisted, and reCaptcha added
+    const form     = document.getElementById('contact-form');
+    const alertBox = document.getElementById('contact-alert');
+    const nameEl   = document.getElementById('contact-name');
+    const emailEl  = document.getElementById('contact-email');
+    const subjEl   = document.getElementById('contact-subject');
+    const msgEl    = document.getElementById('contact-message');
+    const honeyEl  = document.getElementById('contact-company');
 
+    const SERVICE_ID  = 'service_mtipwhb';
+    const TEMPLATE_ID = 'template_azsgfu9';
+    const PUBLIC_KEY  = '6ZH-t6dPtUfKUV-HB'; 
 
-    // CONTACT FORM SUBMIT BUTTON
-    contactForm?.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const data = new FormData(contactForm);
-        const name = (data.get('name') || '').toString().trim();
-        const email = (data.get('email') || '').toString().trim();
-        const message = (data.get('message') || '').toString().trim();
+    const SUBMIT_COOLDOWN_MS = 8000;
 
-        const subject = encodeURIComponent(`New inquiry from ${name || 'your website'}`);
-        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+    function showAlert(type, text) {
+        if (!alertBox) return;
+        alertBox.className = `alert alert-${type}`;
+        alertBox.textContent = text;
+        alertBox.classList.remove('d-none');
+        alertBox.setAttribute('role', 'alert');
+    }
 
-        window.location.href = `mailto:ricksubel@gmail.com?subject=${subject}&body=${body}`;
-        contactForm.reset();
+    async function sendViaEmailJS(recaptchaToken) {
+        // IMPORTANT: pass the reCAPTCHA token as "g-recaptcha-response"
+        const params = {
+        from_name : (nameEl?.value || '').trim(),
+        reply_to  : (emailEl?.value || '').trim(),
+        subject   : ((subjEl?.value || '').trim() || `New message from ${(nameEl?.value || '').trim()} — Website Contact`),
+        message   : (msgEl?.value || '').trim(),
+        "g-recaptcha-response": recaptchaToken
+        };
+
+        if (typeof emailjs === 'undefined' || !emailjs.send) {
+        throw new Error('EmailJS not loaded');
+        }
+        emailjs.init(PUBLIC_KEY);
+        return emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
+    }
+
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Honeypot → pretend success & silently drop
+        if (honeyEl && honeyEl.value) {
+        showAlert('success', 'Thanks! Your message has been received.');
+        form.reset();
+        if (window.grecaptcha?.reset) grecaptcha.reset();
+        return;
+        }
+
+        // Native validation
+        if (!form.checkValidity()) {
+        e.stopPropagation();
+        form.classList.add('was-validated');
+        showAlert('warning', 'Please complete the required fields.');
+        return;
+        }
+
+        // Rate-limit
+        const last = parseInt(localStorage.getItem('contact_last_submit_ts') || '0', 10);
+        const now  = Date.now();
+        if (now - last < SUBMIT_COOLDOWN_MS) {
+        showAlert('warning', 'Hang on a moment—please avoid rapid re-submits.');
+        return;
+        }
+
+        // reCAPTCHA: ensure solved
+        const token = window.grecaptcha?.getResponse();
+        if (!token) {
+        showAlert('warning', 'Please complete the reCAPTCHA.');
+        return;
+        }
+
+        try {
+        showAlert('secondary', 'Sending…');
+        await sendViaEmailJS(token);
+        showAlert('success', 'Thanks! Your message has been sent.');
+        localStorage.setItem('contact_last_submit_ts', String(now));
+        form.reset();
+        } catch (err) {
+        console.warn('EmailJS error:', err);
+        showAlert('danger', 'Hmm, something went wrong sending your message. Please try again.');
+        } finally {
+        // reset widget so it must be solved again
+        if (window.grecaptcha?.reset) grecaptcha.reset();
+        form.classList.remove('was-validated');
+        }
     });
+
+
+
 
     // CAROUSEL FUNCTIONS
     projectCarousels.forEach((carousel) => {

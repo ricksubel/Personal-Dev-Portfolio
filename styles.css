@@ -98,6 +98,18 @@ img[data-selfie] {
   padding: clamp(72px, 13vw, 120px) 0;
 }
 
+@media (min-width: 768px) {
+  html {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: clamp(72px, 12vh, 120px);
+  }
+
+  .section {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}
+
 .section--accent {
   background: var(--color-surface);
   backdrop-filter: blur(22px);
@@ -1133,13 +1145,25 @@ img[data-selfie] {
 
 .contact__form {
   display: grid;
-  gap: 1rem;
+  gap: 4rem;
 }
 
 .form__field {
   display: grid;
   gap: 0.45rem;
   font-size: 0.9rem;
+}
+
+.honeyfield {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .form__field span {
@@ -1178,6 +1202,13 @@ textarea {
   color: var(--color-text-muted);
   text-align: center;
 }
+
+/* Center the captcha row */
+#contact-form .g-recaptcha {
+  transform: scale(0.98); /* tiny shrink if needed */
+  transform-origin: center;
+}
+
 
 @media (min-width: 900px) {
   .contact {
@@ -1338,6 +1369,15 @@ textarea {
 
   .skills__group {
     background-position: 0 0, 50% 50% !important;
+  }
+
+  html {
+    scroll-snap-type: none;
+  }
+
+  .section {
+    scroll-snap-align: unset;
+    scroll-snap-stop: normal;
   }
 }
 
