@@ -566,7 +566,7 @@ img[data-selfie] {
 
 .split__media img {
   width: 100%;
-  height: 100%;
+  height: auto;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-elevated);
